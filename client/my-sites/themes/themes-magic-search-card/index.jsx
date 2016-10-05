@@ -142,18 +142,27 @@ const ThemesMagicSearchCard = React.createClass( {
 
 	searchTokens( input ) {
 		const tokens = input.split(/(\s+)/);
-		let cls;
 		return (
 			tokens.map( ( token, i ) => {
 				if( token.trim() === '' ) {
-					cls = "search-tokens__white-space";
+					return <span className="search-tokens__white-space" key={ i }>{ token }</span>; // use shortid for key
 				} else if ( filterIsValid( token ) ) {
-					cls = "search-tokens__token";
+					const token_parts = token.split(/(:)/);
+					const taxonomy = token_parts[0];
+					const separator = token_parts[1];
+					const filter = token_parts[2];
+ 					return (
+						<span className="search-tokens__token" key={ i }>
+							<span className="search-tokens__taxonomy">{ taxonomy }</span>
+							<span className="search-tokens__separator">{ separator }</span>
+							<span className="search-tokens__filter">{ filter }</span>
+						</span>
+					);
 				} else {
-					cls = "search-tokens__text";
+					return <span className="search-tokens__text" key={ i }>{ token }</span>; // use shortid for key
 				}
 
-				return <span className={ cls } key={ i }>{ token }</span>; // use shortid for key
+
 			} )
 		);
 	},
